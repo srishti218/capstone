@@ -1,0 +1,53 @@
+name: radreview
+services:
+  viewer:
+    build:
+      context: .
+      target: api
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      RADREVIEW_DEMO: "${RADREVIEW_DEMO:-1}"
+    volumes:
+      - review-data:/app/runtime
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/api/health', timeout=2).close()"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  orthanc:
+    image: orthancteam/orthanc:26.11.0
+    ports:
+      - "127.0.0.1:8042:8042"
+      - "127.0.0.1:4242:4242"
+    environment:
+      ORTHANC__NAME: RadReview Lab
+      ORTHANC__DICOM_AET: RADREVIEW
+      ORTHANC__STABLE_AGE: "5"
+      ORTHANC__REMOTE_ACCESS_ALLOWED: "true"
+      ORTHANC__AUTHENTICATION_ENABLED: "false"
+    volumes:
+      - orthanc-data:/var/lib/orthanc/db
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      target: worker
+    environment:
+      ORTHANC_URL: http://orthanc:8042
+      RADREVIEW_WEIGHTS: /app/weights
+      RADREVIEW_DEVICE: cpu
+      OMP_NUM_THREADS: "2"
+    depends_on:
+      - orthanc
+    volumes:
+      - review-data:/app/runtime
+      - ./weights:/app/weights:ro
+    restart: unless-stopped
+
+volumes:
+  review-data:
+  orthanc-data:

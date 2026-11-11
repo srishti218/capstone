@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-api
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: fraud-api
+  template:
+    metadata:
+      labels:
+        app: fraud-api
+    spec:
+      containers:
+        - name: api
+          image: fraud-detection-api:local
+          imagePullPolicy: Never
+          env:
+            - {name: KAFKA_ENABLED, value: "true"}
+            - {name: KAFKA_BOOTSTRAP_SERVERS, value: kafka:9092}
+            - {name: FRAUD_STATE_DIR, value: /state}
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 20
+          volumeMounts:
+            - name: state
+              mountPath: /state
+      volumes:
+        - name: state
+          persistentVolumeClaim:
+            claimName: fraud-state
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fraud-api
+spec:
+  selector:
+    app: fraud-api
+  ports:
+    - port: 8000
+      targetPort: 8000

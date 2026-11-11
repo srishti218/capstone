@@ -1,0 +1,11 @@
+.git
+.venv
+.env
+dashboard/node_modules
+dashboard/dist
+.runtime
+artifacts/state
+data
+mlruns
+feast/data/.snapshot-*
+**/__pycache__

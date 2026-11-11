@@ -1,0 +1,45 @@
+stages:
+  prepare_cxr:
+    cmd: python -m imaging.prepare cxr data/rsna data/processed/cxr
+    deps:
+      - data/rsna
+      - imaging/prepare.py
+      - imaging/dicom.py
+      - imaging/models.py
+      - requirements-ml.txt
+    outs:
+      - data/processed/cxr
+  prepare_ct:
+    cmd: python -m imaging.prepare ct data/Task06_Lung data/processed/ct
+    deps:
+      - data/Task06_Lung
+      - imaging/prepare.py
+      - imaging/dicom.py
+      - imaging/models.py
+      - requirements-ml.txt
+    outs:
+      - data/processed/ct
+  train_cxr:
+    cmd: python -m imaging.train cxr data/processed/cxr weights/classifier.pt reports/cxr.json --epochs 10 --batch-size 16
+    deps:
+      - data/processed/cxr
+      - imaging/train.py
+      - imaging/models.py
+      - imaging/dicom.py
+      - requirements-ml.txt
+    outs:
+      - weights/classifier.pt
+    metrics:
+      - reports/cxr.json
+  train_ct:
+    cmd: python -m imaging.train ct data/processed/ct weights/segmenter.pt reports/ct.json --epochs 30 --batch-size 2 --lr 0.001
+    deps:
+      - data/processed/ct
+      - imaging/train.py
+      - imaging/models.py
+      - imaging/dicom.py
+      - requirements-ml.txt
+    outs:
+      - weights/segmenter.pt
+    metrics:
+      - reports/ct.json

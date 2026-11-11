@@ -1,0 +1,1 @@
+"""Educational imaging review application."""

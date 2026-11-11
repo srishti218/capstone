@@ -1,0 +1,12 @@
+.git
+.venv
+**/__pycache__
+viewer/node_modules
+viewer/dist
+runtime
+data
+weights
+.env
+.dvc/cache
+
+reports

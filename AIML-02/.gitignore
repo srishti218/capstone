@@ -1,0 +1,12 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+.env
+/runtime/
+/data/*
+!/data/*.dvc
+/weights/
+/viewer/node_modules
+/viewer/dist/
+/reports/
