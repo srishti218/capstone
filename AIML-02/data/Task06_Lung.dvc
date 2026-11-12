@@ -1,0 +1,6 @@
+outs:
+- md5: 07df5e59960d95c077ff05e8826f82fe.dir
+  size: 6095185438
+  nfiles: 252
+  hash: md5
+  path: Task06_Lung

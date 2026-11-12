@@ -1,0 +1,130 @@
+schema: '2.0'
+stages:
+  prepare_cxr:
+    cmd: python -m imaging.prepare cxr data/rsna data/processed/cxr
+    deps:
+    - path: data/rsna
+      hash: md5
+      md5: 471b3e91eaa152b68bd538d36ea7ad46.dir
+      size: 3556801958
+      nfiles: 26685
+    - path: imaging/dicom.py
+      hash: md5
+      md5: 2ab009472591dddf03731187aabfc14f
+      size: 5431
+    - path: imaging/models.py
+      hash: md5
+      md5: f28dbf5d12b1cbb5eb6ffbfed6427ab5
+      size: 2380
+    - path: imaging/prepare.py
+      hash: md5
+      md5: 4951d66a836ae2561ff260a2427f7f83
+      size: 4631
+    - path: requirements-ml.txt
+      hash: md5
+      md5: 6cda1653c23ec16e734abf7080223f13
+      size: 170
+    outs:
+    - path: data/processed/cxr
+      hash: md5
+      md5: f5ea37b0378563f5295eda33135259e6.dir
+      size: 646843144
+      nfiles: 26685
+  train_cxr:
+    cmd: python -m imaging.train cxr data/processed/cxr weights/classifier.pt 
+      reports/cxr.json --epochs 10 --batch-size 16
+    deps:
+    - path: data/processed/cxr
+      hash: md5
+      md5: f5ea37b0378563f5295eda33135259e6.dir
+      size: 646843144
+      nfiles: 26685
+    - path: imaging/dicom.py
+      hash: md5
+      md5: 2ab009472591dddf03731187aabfc14f
+      size: 5431
+    - path: imaging/models.py
+      hash: md5
+      md5: f28dbf5d12b1cbb5eb6ffbfed6427ab5
+      size: 2380
+    - path: imaging/train.py
+      hash: md5
+      md5: 7f9c591b191206bde09e8befc6d28edf
+      size: 8915
+    - path: requirements-ml.txt
+      hash: md5
+      md5: 6cda1653c23ec16e734abf7080223f13
+      size: 170
+    outs:
+    - path: reports/cxr.json
+      hash: md5
+      md5: cbe080501cf755b0ffaf7c3f078a2010
+      size: 23042
+    - path: weights/classifier.pt
+      hash: md5
+      md5: 3b48f77678b80803cdb6c130b903e10e
+      size: 28416680
+  prepare_ct:
+    cmd: python -m imaging.prepare ct data/Task06_Lung data/processed/ct
+    deps:
+    - path: data/Task06_Lung
+      hash: md5
+      md5: 07df5e59960d95c077ff05e8826f82fe.dir
+      size: 6095185438
+      nfiles: 252
+    - path: imaging/dicom.py
+      hash: md5
+      md5: 2ab009472591dddf03731187aabfc14f
+      size: 5431
+    - path: imaging/models.py
+      hash: md5
+      md5: f28dbf5d12b1cbb5eb6ffbfed6427ab5
+      size: 2380
+    - path: imaging/prepare.py
+      hash: md5
+      md5: 4951d66a836ae2561ff260a2427f7f83
+      size: 4631
+    - path: requirements-ml.txt
+      hash: md5
+      md5: 6cda1653c23ec16e734abf7080223f13
+      size: 170
+    outs:
+    - path: data/processed/ct
+      hash: md5
+      md5: fd950885b33722fe7cc7a84971ab275e.dir
+      size: 1288789287
+      nfiles: 127
+  train_ct:
+    cmd: python -m imaging.train ct data/processed/ct weights/segmenter.pt 
+      reports/ct.json --epochs 30 --batch-size 2 --lr 0.001
+    deps:
+    - path: data/processed/ct
+      hash: md5
+      md5: fd950885b33722fe7cc7a84971ab275e.dir
+      size: 1288789287
+      nfiles: 127
+    - path: imaging/dicom.py
+      hash: md5
+      md5: 2ab009472591dddf03731187aabfc14f
+      size: 5431
+    - path: imaging/models.py
+      hash: md5
+      md5: f28dbf5d12b1cbb5eb6ffbfed6427ab5
+      size: 2380
+    - path: imaging/train.py
+      hash: md5
+      md5: 7f9c591b191206bde09e8befc6d28edf
+      size: 8915
+    - path: requirements-ml.txt
+      hash: md5
+      md5: 6cda1653c23ec16e734abf7080223f13
+      size: 170
+    outs:
+    - path: reports/ct.json
+      hash: md5
+      md5: 4b2683a7ee1d39e17872b1159e580d58
+      size: 11832
+    - path: weights/segmenter.pt
+      hash: md5
+      md5: 889dd5c3eeca51c310277109a1829285
+      size: 4766078
