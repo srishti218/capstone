@@ -1,0 +1,6 @@
+Building a fraud scoring API: I used FastAPI to accept transaction data, return fraud scores, and document endpoints in Swagger.
+Training and evaluating models: I worked with XGBoost and a PyTorch Geometric graph neural network, and learned to evaluate them with metrics such as PR-AUC and ROC-AUC.
+Monitoring model health: I used drift reports and retraining status to track changes in incoming data and candidate models.
+Supporting analyst review: I built a dashboard and case workflow for reviewing alerts, changing case status, and submitting feedback labels.
+
+Built an end-to-end fraud detection platform with XGBoost and graph neural networks, real-time scoring, drift monitoring, and an analyst dashboard.

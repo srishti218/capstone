@@ -1,0 +1,9 @@
+how DICOM stores medical images and metadata, and how to choose public datasets for classification and segmentation.
+how to resize, normalize, and augment scans and track dataset versions with DVC.
+how to fine-tune a pretrained DenseNet-121 for X-ray classification and train a MONAI 3D U-Net for CT segmentation.
+how to use Grad-CAM to visualize which regions influenced a classifier’s prediction.
+how to use Orthanc to receive DICOM studies and connect them to an inference service.
+how to build a React viewer that displays scans, overlays, and confidence scores and logs each approval or rejection.
+how to package the system with Docker and document model limitations, dataset bias, and its education-only use.
+
+Built a medical imaging AI pipeline using DICOM preprocessing, DVC, DenseNet, MONAI 3D U-Net, Grad-CAM, Orthanc, React, and Docker.
